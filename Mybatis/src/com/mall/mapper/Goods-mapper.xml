@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.mall.dao.GoodsDao">
+	<resultMap type="Goods" id="GoodsMapper">
+		<id column="gid" property="gid"/>
+		<result column="gname" property="gname"/>
+		<result column="type" property="type"/>
+		<result column="price" property="price"/>
+		<result column="date" property="date"/>
+	</resultMap>
+	
+	<select id="findAll" resultMap="GoodsMapper">
+		select * from goods
+	</select>
+	
+	<select id="findById" resultType="Goods" parameterType="java.lang.Integer">
+		select * from Goods where gid=#{gid}
+	</select>
+	
+	<insert id="addGoods" parameterType="Goods">
+	    insert into Goods(gname,type,price,date) values(#{gname},#{type},#{price},#{date})
+	</insert>
+	
+	<update id="updateGoods"  parameterType="Goods">
+	    update goods set gname=#{gname},type=#{type},price=#{price},date=#{date} where gid=#{gid}
+	</update>
+	
+    <delete id="deleteGoods"  parameterType="java.lang.Integer">
+        delete from goods where gid=#{gid}
+    </delete>
+
+</mapper>
