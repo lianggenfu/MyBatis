@@ -1,0 +1,37 @@
+package com.etc.dao;
+
+import com.etc.entity.Orders;
+import com.etc.entity.OrdersExample;
+import java.util.List;
+
+import javax.persistence.criteria.Order;
+
+import org.apache.ibatis.annotations.Param;
+
+public interface OrdersMapper {
+    int countByExample(OrdersExample example);
+
+    int deleteByExample(OrdersExample example);
+
+    int deleteByPrimaryKey(Integer deliveryid);
+
+    int insert(Orders record);
+
+    int insertSelective(Orders record);
+
+    List<Orders> selectByExample(OrdersExample example);
+
+    Orders selectByPrimaryKey(Integer deliveryid);
+    
+    List<Orders> selectByUserId(Integer userid);
+
+    int updateByExampleSelective(@Param("record") Orders record, @Param("example") OrdersExample example);
+
+    int updateByExample(@Param("record") Orders record, @Param("example") OrdersExample example);
+
+    int updateByPrimaryKeySelective(Orders record);
+
+    int updateByPrimaryKey(Orders record);
+    
+    int updatemap(Integer deliveryid);
+}

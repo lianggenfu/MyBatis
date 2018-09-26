@@ -1,0 +1,23 @@
+package com.etc.entity;
+
+public class Transfer {
+    private String tprovince;
+
+    private String tcity;
+
+    public String getTprovince() {
+        return tprovince;
+    }
+
+    public void setTprovince(String tprovince) {
+        this.tprovince = tprovince == null ? null : tprovince.trim();
+    }
+
+    public String getTcity() {
+        return tcity;
+    }
+
+    public void setTcity(String tcity) {
+        this.tcity = tcity == null ? null : tcity.trim();
+    }
+}

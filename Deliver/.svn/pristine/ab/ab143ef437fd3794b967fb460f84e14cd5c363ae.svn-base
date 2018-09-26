@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.etc.dao.PriceMapper" >
+  <resultMap id="BaseResultMap" type="com.etc.entity.Price" >
+    <result column="startAdd" property="startadd" jdbcType="VARCHAR" />
+    <result column="endAdd" property="endadd" jdbcType="VARCHAR" />
+    <result column="firstKgPrice" property="firstkgprice" jdbcType="DOUBLE" />
+    <result column="perKgprice" property="perkgprice" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    startAdd, endAdd, firstKgPrice, perKgprice
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.etc.entity.PriceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from price
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.etc.entity.PriceExample" >
+    delete from price
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.etc.entity.Price" >
+    insert into price (startAdd, endAdd, firstKgPrice, 
+      perKgprice)
+    values (#{startadd,jdbcType=VARCHAR}, #{endadd,jdbcType=VARCHAR}, #{firstkgprice,jdbcType=DOUBLE}, 
+      #{perkgprice,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.etc.entity.Price" >
+    insert into price
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="startadd != null" >
+        startAdd,
+      </if>
+      <if test="endadd != null" >
+        endAdd,
+      </if>
+      <if test="firstkgprice != null" >
+        firstKgPrice,
+      </if>
+      <if test="perkgprice != null" >
+        perKgprice,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="startadd != null" >
+        #{startadd,jdbcType=VARCHAR},
+      </if>
+      <if test="endadd != null" >
+        #{endadd,jdbcType=VARCHAR},
+      </if>
+      <if test="firstkgprice != null" >
+        #{firstkgprice,jdbcType=DOUBLE},
+      </if>
+      <if test="perkgprice != null" >
+        #{perkgprice,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.etc.entity.PriceExample" resultType="java.lang.Integer" >
+    select count(*) from price
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update price
+    <set >
+      <if test="record.startadd != null" >
+        startAdd = #{record.startadd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endadd != null" >
+        endAdd = #{record.endadd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.firstkgprice != null" >
+        firstKgPrice = #{record.firstkgprice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.perkgprice != null" >
+        perKgprice = #{record.perkgprice,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update price
+    set startAdd = #{record.startadd,jdbcType=VARCHAR},
+      endAdd = #{record.endadd,jdbcType=VARCHAR},
+      firstKgPrice = #{record.firstkgprice,jdbcType=DOUBLE},
+      perKgprice = #{record.perkgprice,jdbcType=DOUBLE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

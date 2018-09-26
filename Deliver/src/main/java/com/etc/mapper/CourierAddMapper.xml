@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.etc.dao.CourierAddMapper" >
+  	<select id="courierDeliveryList" resultType="hashmap">
+  		SELECT * FROM orders where status = 4
+  	</select>
+  	
+  	<!-- 快递员添加了快递信息之后，显示到快递员快递之下 de 快递数据-->
+  	<select id="courierAddDelivery" resultType="hashmap" parameterType="java.lang.Integer">
+  		SELECT orders.* FROM orders,accessinfo WHERE accessinfo.deliveryId = orders.deliveryId AND accessinfo.cuId = #{cuId} 		
+  	</select>  	
+  	  
+  	<select id="userorders" resultType="hashmap" parameterType="java.lang.Integer">
+  		SELECT orders.* FROM orders WHERE orders.userId =  #{userId} 		
+  	</select>
+</mapper>

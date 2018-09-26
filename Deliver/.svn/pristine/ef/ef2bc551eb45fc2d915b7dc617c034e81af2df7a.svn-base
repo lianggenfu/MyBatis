@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.etc.dao.CourierMapper" >
+  <resultMap id="BaseResultMap" type="com.etc.entity.Courier" >
+    <id column="cuId" property="cuid" jdbcType="INTEGER" />
+    <result column="cuName" property="cuname" jdbcType="VARCHAR" />
+    <result column="cuTel" property="cutel" jdbcType="VARCHAR" />
+    <result column="brandId" property="brandid" jdbcType="INTEGER" />
+    <result column="cuPwd" property="cupwd" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    cuId, cuName, cuTel, brandId, cuPwd
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.etc.entity.CourierExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from courier
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from courier
+    where cuId = #{cuid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from courier
+    where cuId = #{cuid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.etc.entity.CourierExample" >
+    delete from courier
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.etc.entity.Courier" >
+    <selectKey resultType="java.lang.Integer" keyProperty="cuid" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into courier (cuName, cuTel, brandId, 
+      cuPwd)
+    values (#{cuname,jdbcType=VARCHAR}, #{cutel,jdbcType=VARCHAR}, #{brandid,jdbcType=INTEGER}, 
+      #{cupwd,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.etc.entity.Courier" >
+    <selectKey resultType="java.lang.Integer" keyProperty="cuid" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into courier
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cuname != null" >
+        cuName,
+      </if>
+      <if test="cutel != null" >
+        cuTel,
+      </if>
+      <if test="brandid != null" >
+        brandId,
+      </if>
+      <if test="cupwd != null" >
+        cuPwd,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cuname != null" >
+        #{cuname,jdbcType=VARCHAR},
+      </if>
+      <if test="cutel != null" >
+        #{cutel,jdbcType=VARCHAR},
+      </if>
+      <if test="brandid != null" >
+        #{brandid,jdbcType=INTEGER},
+      </if>
+      <if test="cupwd != null" >
+        #{cupwd,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.etc.entity.CourierExample" resultType="java.lang.Integer" >
+    select count(*) from courier
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update courier
+    <set >
+      <if test="record.cuid != null" >
+        cuId = #{record.cuid,jdbcType=INTEGER},
+      </if>
+      <if test="record.cuname != null" >
+        cuName = #{record.cuname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cutel != null" >
+        cuTel = #{record.cutel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.brandid != null" >
+        brandId = #{record.brandid,jdbcType=INTEGER},
+      </if>
+      <if test="record.cupwd != null" >
+        cuPwd = #{record.cupwd,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update courier
+    set cuId = #{record.cuid,jdbcType=INTEGER},
+      cuName = #{record.cuname,jdbcType=VARCHAR},
+      cuTel = #{record.cutel,jdbcType=VARCHAR},
+      brandId = #{record.brandid,jdbcType=INTEGER},
+      cuPwd = #{record.cupwd,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.etc.entity.Courier" >
+    update courier
+    <set >
+      <if test="cuname != null" >
+        cuName = #{cuname,jdbcType=VARCHAR},
+      </if>
+      <if test="cutel != null" >
+        cuTel = #{cutel,jdbcType=VARCHAR},
+      </if>
+      <if test="brandid != null" >
+        brandId = #{brandid,jdbcType=INTEGER},
+      </if>
+      <if test="cupwd != null" >
+        cuPwd = #{cupwd,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cuId = #{cuid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.etc.entity.Courier" >
+    update courier
+    set cuName = #{cuname,jdbcType=VARCHAR},
+      cuTel = #{cutel,jdbcType=VARCHAR},
+      brandId = #{brandid,jdbcType=INTEGER},
+      cuPwd = #{cupwd,jdbcType=VARCHAR}
+    where cuId = #{cuid,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,96 @@
+package com.etc.controller;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.etc.dao.OrdersMapper;
+import com.etc.entity.Orders;
+
+@Controller
+public class OrderController {
+	
+	@Resource 
+	private OrdersMapper ordersMapper;
+	
+/*	@RequestMapping("/showorder")
+	public String price(Model model){
+		List<Orders> list = orderMapper.selectByExample(null);
+		model.addAttribute("list",list);
+		return "admin/ManagerOrder";
+	}*/
+	
+	@RequestMapping("/changeorder")
+	public String changeprice(Model model,Orders order){
+		int a = ordersMapper.updateByPrimaryKey(order);
+		
+		return "forward:showorder.html";
+	}
+	@RequestMapping("/removeorder")
+	public String removeprice(Model model,int deliveryid){
+	
+		int a = ordersMapper.deleteByPrimaryKey(deliveryid);
+		
+		return "forward:showorder.html";
+	}
+	
+	@RequestMapping("/showorder")
+	public String showOrders( Model model,HttpServletRequest request){
+		List<Orders> list=ordersMapper.selectByExample(null);
+		request.getSession().setAttribute("list", list);
+	    return "admin/ManagerOrder";
+	  
+	}
+	
+	@RequestMapping("/showorderdetail")
+	public String showOrderDetail(Model model,int deliveryid){
+		Orders orders=ordersMapper.selectByPrimaryKey(deliveryid);
+		model.addAttribute("orderdetail",orders);
+		System.out.println(orders);
+		/*for(Orders orde : orders){
+			System.out.println(orde.getAcceptadd());
+		}*/
+		return "showorders";
+	}
+	@RequestMapping("/addorders")
+	public String insertOrders(String sendname,String sendphone,String sendpostcode,String senddetailadd,
+			String acceptname,String acceptphone,String acceptpostcode,String acceptdetailadd, String type,
+			float weight,String isinsurance,int insuranceprice,int payment,String sendadd,String acceptadd){
+		Orders order=new Orders();
+		order.setSendname(sendname);
+		order.setSendphone(sendphone);
+		order.setSendpostcode(sendpostcode);
+		order.setSenddetailadd(senddetailadd);
+		order.setAcceptname(acceptname);
+		order.setAcceptphone(acceptphone);
+		order.setAcceptpostcode(acceptpostcode);
+		order.setAcceptdetailadd(acceptdetailadd);
+		order.setType(type);
+		order.setWeight(weight);
+		order.setIsinsurance(isinsurance);
+		order.setInsuranceprice(insuranceprice);
+		order.setPayment(payment);
+		order.setSendadd(sendadd);
+		order.setAcceptadd(acceptadd);
+		order.setUserid(2);
+		Integer a = 12;
+		order.setDeliveryid(a);
+		order.setStatus(1);
+		order.setTransportation(1);
+		order.setMoney(12);
+//		order.setSendadd("急急急");
+//		order.setAcceptadd("来来来");
+		System.out.println(order.getDeliveryid());
+		ordersMapper.insert(order);
+		return "hello";
+	}
+	@RequestMapping("/load")
+	public String test(Orders order){
+		return "onlinedelivery";
+	}
+}

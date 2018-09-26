@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.etc.dao.AccessinfoMapper" >
+  <resultMap id="BaseResultMap" type="com.etc.entity.Accessinfo" >
+    <id column="acid" property="acid" jdbcType="INTEGER" />
+    <result column="cuId" property="cuid" jdbcType="INTEGER" />
+    <result column="deliveryId" property="deliveryid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    acid, cuId, deliveryId
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.etc.entity.AccessinfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from accessinfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from accessinfo
+    where acid = #{acid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from accessinfo
+    where acid = #{acid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.etc.entity.AccessinfoExample" >
+    delete from accessinfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.etc.entity.Accessinfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="acid" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into accessinfo (cuId, deliveryId)
+    values (#{cuid,jdbcType=INTEGER}, #{deliveryid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.etc.entity.Accessinfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="acid" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into accessinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cuid != null" >
+        cuId,
+      </if>
+      <if test="deliveryid != null" >
+        deliveryId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cuid != null" >
+        #{cuid,jdbcType=INTEGER},
+      </if>
+      <if test="deliveryid != null" >
+        #{deliveryid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.etc.entity.AccessinfoExample" resultType="java.lang.Integer" >
+    select count(*) from accessinfo
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update accessinfo
+    <set >
+      <if test="record.acid != null" >
+        acid = #{record.acid,jdbcType=INTEGER},
+      </if>
+      <if test="record.cuid != null" >
+        cuId = #{record.cuid,jdbcType=INTEGER},
+      </if>
+      <if test="record.deliveryid != null" >
+        deliveryId = #{record.deliveryid,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update accessinfo
+    set acid = #{record.acid,jdbcType=INTEGER},
+      cuId = #{record.cuid,jdbcType=INTEGER},
+      deliveryId = #{record.deliveryid,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.etc.entity.Accessinfo" >
+    update accessinfo
+    <set >
+      <if test="cuid != null" >
+        cuId = #{cuid,jdbcType=INTEGER},
+      </if>
+      <if test="deliveryid != null" >
+        deliveryId = #{deliveryid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where acid = #{acid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.etc.entity.Accessinfo" >
+    update accessinfo
+    set cuId = #{cuid,jdbcType=INTEGER},
+      deliveryId = #{deliveryid,jdbcType=INTEGER}
+    where acid = #{acid,jdbcType=INTEGER}
+  </update>
+</mapper>

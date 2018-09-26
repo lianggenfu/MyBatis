@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.etc.dao.LogisticsMapper" >
+  <resultMap id="BaseResultMap" type="com.etc.entity.Logistics" >
+    <id column="deliveryId" property="deliveryid" jdbcType="INTEGER" />
+    <result column="dlTime" property="dltime" jdbcType="TIMESTAMP" />
+    <result column="dlAddress" property="dladdress" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    deliveryId, dlTime, dlAddress
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.etc.entity.LogisticsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from logistics
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from logistics
+    where deliveryId = #{deliveryid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from logistics
+    where deliveryId = #{deliveryid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.etc.entity.LogisticsExample" >
+    delete from logistics
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.etc.entity.Logistics" >
+    <selectKey resultType="java.lang.Integer" keyProperty="deliveryid" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into logistics (deliveryId, dlTime, dlAddress
+      )
+    values (#{deliveryid,jdbcType=INTEGER}, #{dltime,jdbcType=TIMESTAMP}, #{dladdress,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.etc.entity.Logistics" >
+    <selectKey resultType="java.lang.Integer" keyProperty="deliveryid" order="BEFORE" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into logistics
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      deliveryId,
+      <if test="dltime != null" >
+        dlTime,
+      </if>
+      <if test="dladdress != null" >
+        dlAddress,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{deliveryid,jdbcType=INTEGER},
+      <if test="dltime != null" >
+        #{dltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dladdress != null" >
+        #{dladdress,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.etc.entity.LogisticsExample" resultType="java.lang.Integer" >
+    select count(*) from logistics
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update logistics
+    <set >
+      <if test="record.deliveryid != null" >
+        deliveryId = #{record.deliveryid,jdbcType=INTEGER},
+      </if>
+      <if test="record.dltime != null" >
+        dlTime = #{record.dltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dladdress != null" >
+        dlAddress = #{record.dladdress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update logistics
+    set deliveryId = #{record.deliveryid,jdbcType=INTEGER},
+      dlTime = #{record.dltime,jdbcType=TIMESTAMP},
+      dlAddress = #{record.dladdress,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.etc.entity.Logistics" >
+    update logistics
+    <set >
+      <if test="dltime != null" >
+        dlTime = #{dltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dladdress != null" >
+        dlAddress = #{dladdress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where deliveryId = #{deliveryid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.etc.entity.Logistics" >
+    update logistics
+    set dlTime = #{dltime,jdbcType=TIMESTAMP},
+      dlAddress = #{dladdress,jdbcType=VARCHAR}
+    where deliveryId = #{deliveryid,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,59 @@
+
+.content-search{
+	margin-top: 56px;
+}
+.seaNav:hover{
+	background-color: #E3E3E3;
+}
+.left_nav .search_nav .seaNav{
+	width: 100%;
+	line-height: 60px;
+	text-indent: -20px;
+}
+.left_nav ul li{
+	list-style: none;
+	border-bottom: solid 1px #004A82;
+	text-align: center;
+}
+.seaNav img{
+	width: 30px;
+}
+.right_top{
+	margin: 0 10px;
+}
+.right_top img{
+	width: 45px;
+}
+.right_top .search_about{
+	font-family: "微软雅黑";
+	font-size: 18px;
+}
+.upContent{
+	margin-top: 10px;
+}
+.right_search textarea{
+	width: 95%;
+	height: 180px;
+}
+.right_about{
+	display: none;
+}
+.sea_butt{
+	width: 120px;
+	height: 45px;
+	line-height: 45px;
+	background-color: teal;
+	border: none;
+	float: right;
+	margin: 10px 60px 0;
+	color: #FFFFFF;
+}
+.right_about textarea{
+	height: 600px;
+}
+.deliverSearch{
+	display: block;
+}
+.deliverSearch textarea{
+	height: 150px;
+}

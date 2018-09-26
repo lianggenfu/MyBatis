@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.etc.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.etc.entity.User" >
+    <id column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="nickName" property="nickname" jdbcType="VARCHAR" />
+    <result column="userPwd" property="userpwd" jdbcType="VARCHAR" />
+    <result column="userPhone" property="userphone" jdbcType="VARCHAR" />
+    <result column="userEmail" property="useremail" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    userId, nickName, userPwd, userPhone, userEmail, type
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.etc.entity.UserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where userId = #{userid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user
+    where userId = #{userid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.etc.entity.UserExample" >
+    delete from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.etc.entity.User" >
+    <selectKey resultType="java.lang.Integer" keyProperty="userid" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user (nickName, userPwd, userPhone, 
+      userEmail, type)
+    values (#{nickname,jdbcType=VARCHAR}, #{userpwd,jdbcType=VARCHAR}, #{userphone,jdbcType=VARCHAR}, 
+      #{useremail,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.etc.entity.User" >
+    <selectKey resultType="java.lang.Integer" keyProperty="userid" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="nickname != null" >
+        nickName,
+      </if>
+      <if test="userpwd != null" >
+        userPwd,
+      </if>
+      <if test="userphone != null" >
+        userPhone,
+      </if>
+      <if test="useremail != null" >
+        userEmail,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="userpwd != null" >
+        #{userpwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userphone != null" >
+        #{userphone,jdbcType=VARCHAR},
+      </if>
+      <if test="useremail != null" >
+        #{useremail,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.etc.entity.UserExample" resultType="java.lang.Integer" >
+    select count(*) from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update user
+    <set >
+      <if test="record.userid != null" >
+        userId = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.nickname != null" >
+        nickName = #{record.nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userpwd != null" >
+        userPwd = #{record.userpwd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userphone != null" >
+        userPhone = #{record.userphone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.useremail != null" >
+        userEmail = #{record.useremail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update user
+    set userId = #{record.userid,jdbcType=INTEGER},
+      nickName = #{record.nickname,jdbcType=VARCHAR},
+      userPwd = #{record.userpwd,jdbcType=VARCHAR},
+      userPhone = #{record.userphone,jdbcType=VARCHAR},
+      userEmail = #{record.useremail,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.etc.entity.User" >
+    update user
+    <set >
+      <if test="nickname != null" >
+        nickName = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="userpwd != null" >
+        userPwd = #{userpwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userphone != null" >
+        userPhone = #{userphone,jdbcType=VARCHAR},
+      </if>
+      <if test="useremail != null" >
+        userEmail = #{useremail,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+    </set>
+    where userId = #{userid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.etc.entity.User" >
+    update user
+    set nickName = #{nickname,jdbcType=VARCHAR},
+      userPwd = #{userpwd,jdbcType=VARCHAR},
+      userPhone = #{userphone,jdbcType=VARCHAR},
+      userEmail = #{useremail,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER}
+    where userId = #{userid,jdbcType=INTEGER}
+  </update>
+</mapper>

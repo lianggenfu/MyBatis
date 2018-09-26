@@ -1,0 +1,117 @@
+package com.etc.controller;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.chainsaw.Main;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.etc.dao.UserMapper;
+import com.etc.entity.User;
+import com.etc.entity.UserExample;
+
+@Controller
+public class UserController {
+	
+	@Resource 
+	private UserMapper userMapper;
+	
+	@RequestMapping("/main")
+	public String Main(){
+		return "user/index";
+	}
+	
+	@RequestMapping("/order")
+	public String order(){
+		return "user/orders";
+	}
+	
+	@RequestMapping("/ulogin")
+	public String login(){
+		return "user/login";
+	}
+	
+	@RequestMapping("/form")
+	public String form(){
+		System.out.println("form");
+		return "user/form";
+	}
+	
+	@RequestMapping("/process")
+	public String process(){
+		System.out.println("业务");
+		return "user/process";
+	}
+	
+	@RequestMapping("/search")
+	public String search(){
+		return "user/search";
+	}
+	
+	@RequestMapping("/register")
+	public String register(){
+		return "user/register";
+	}
+	
+	@RequestMapping("/index")
+	public String index(){
+		return "user/index";
+	}
+	//骑手登录
+	@RequestMapping("/courierlogin")
+	public String courierlogin(){
+		return "user/courierlogin";
+	}
+	@RequestMapping("/courierregister")
+	public String courierregister(){
+		return "user/courierregister";
+	}
+	
+	@RequestMapping("/userlogin")
+	public String userlogin(String userPhone, String userPwd, HttpServletRequest request){
+		UserExample us=new UserExample();
+		System.out.println(userPhone+" "+userPwd);
+		us.createCriteria().andUserphoneEqualTo(userPhone).andUserpwdEqualTo(userPwd);
+		List<User> users = userMapper.selectByExample(us);		
+		if(users.size()!=1){
+			request.setAttribute("msg", "用户名或密码错误！");
+			return "../../userlogin";
+		}else{			
+			request.getSession().setAttribute("user", users.get(0));
+			return "user/index";
+		}
+		
+	}
+	
+	@RequestMapping("/userlogout")
+	public String logout(HttpServletRequest request){
+		request.setAttribute("msg", "您已安全退出系统");
+		request.getSession().invalidate();
+		return "../../userlogin";
+	}
+	
+	@RequestMapping("/userregister")
+	public String userRegister(String nickName,String userPwd,String userPhone,String userEmail,HttpServletRequest request){
+		System.out.println("123");
+		User user=new User(nickName,userPwd,userPhone,userEmail,0);
+		System.out.println(nickName+" "+userPwd+" "+userPhone+" "+userEmail);
+		int rs=userMapper.insertSelective(user);
+		System.out.println(rs);
+		if(rs>0){
+			return "../../userlogin";
+		}
+		else{
+			return "../../userregister";
+		}
+	}
+	
+	@RequestMapping("/userupdate")
+	public String userUpdate(){
+		return "";
+	}
+	
+}

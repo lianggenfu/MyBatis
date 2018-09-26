@@ -1,0 +1,109 @@
+package com.etc.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.etc.dao.BranchMapper;
+import com.etc.dao.CourierMapper;
+import com.etc.entity.Branch;
+import com.etc.entity.Courier;
+import com.etc.entity.CourierExample;
+
+@Controller
+public class CourierController {
+	@Resource
+	private CourierMapper cMapper;
+	
+	@Resource
+	private BranchMapper bMapper;
+	
+	@RequestMapping("/showcourier")
+	public String courierlogin(Model model){
+		
+		List<Map<String, Object>> couriers = cMapper.selectmap();
+		for(Map<String,Object> map:couriers){
+			System.out.println(map.get("province"));
+		}
+		model.addAttribute("list",couriers);
+		return "admin/Managercourier";
+	}
+	
+	@RequestMapping("/showcourier1")
+	public String couri(Model model){
+		
+		List<Map<String, Object>> map = cMapper.selectmap();
+		model.addAttribute("list",map);
+		return "admin/Managercourier";
+	}
+	
+	@RequestMapping("/changeqishou")
+	/*@ResponseBody
+	public List<Map<String, Object>> showdetail(Model model,int oid){
+		 System.out.println(oid);
+		return courierMapper.
+	}*/
+	@ResponseBody
+	public List<Branch> showdetail(Model model){
+		
+		return bMapper.selectByExample(null);
+	}
+	
+	//查询骑手
+	@RequestMapping("/crlogin")
+	public String courierlogin(String cutel, String cupwd, HttpServletRequest request){
+		CourierExample ce = new CourierExample();
+		ce.createCriteria().andCutelIsNotNull().andCutelEqualTo(cutel).andCupwdEqualTo(cupwd);
+		List<Courier> couriers = cMapper.selectByExample(ce);
+		if(couriers.size()!=1){
+			request.setAttribute("msg", "用户名或密码错误！");
+			return "user/courierlogin";
+		}else{			
+			request.getSession().setAttribute("courier", couriers);
+			return "user/courierorders";
+		}
+	}
+	//增加骑手数据：注册
+	@RequestMapping("/crregister")
+	public String courierregister(String cutel, String cuname,int brandid,String cupwd, HttpServletRequest request){
+		
+	    Courier courier = new Courier();
+		courier.setCuname(cuname);
+		courier.setCutel(cutel);
+		courier.setBrandid(brandid);
+		courier.setCupwd(cupwd);
+		int row = cMapper.insert(courier);
+		return "user/courierorders";
+	}
+	
+	//骑手数据：修改
+		@RequestMapping("/changecourier")
+		public String courierchange(Courier courier,HttpServletRequest request){
+			int a = cMapper.updateByPrimaryKey(courier);
+			return "forward:showcourier.html";
+		   
+		}
+	
+		//增加骑手数据：注册
+		@RequestMapping("/addcourier")
+		public String addcourier(Courier courier){
+			int row = cMapper.insert(courier);
+			return "forward:showcourier.html";
+		}
+		
+	//删除骑手数据
+	@RequestMapping("/crdelete")
+	public String courierdelete(int cuid, HttpServletRequest request){
+		int row = cMapper.deleteByPrimaryKey(cuid);
+		System.out.println("删除成功"+row);
+		return "forward:showcourier.html";
+	}
+	
+}
