@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.etc.dao.TransferMapper" >
+  <resultMap id="BaseResultMap" type="com.etc.entity.Transfer" >
+    <id column="tid" property="tid" jdbcType="INTEGER" />
+    <result column="tprovince" property="tprovince" jdbcType="VARCHAR" />
+    <result column="tcity" property="tcity" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    tid, tprovince, tcity
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.etc.entity.TransferExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from transfer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from transfer
+    where tid = #{tid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from transfer
+    where tid = #{tid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.etc.entity.TransferExample" >
+    delete from transfer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.etc.entity.Transfer" >
+    <selectKey resultType="java.lang.Integer" keyProperty="tid" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into transfer (tprovince, tcity)
+    values (#{tprovince,jdbcType=VARCHAR}, #{tcity,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.etc.entity.Transfer" >
+    <selectKey resultType="java.lang.Integer" keyProperty="tid" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into transfer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tprovince != null" >
+        tprovince,
+      </if>
+      <if test="tcity != null" >
+        tcity,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tprovince != null" >
+        #{tprovince,jdbcType=VARCHAR},
+      </if>
+      <if test="tcity != null" >
+        #{tcity,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.etc.entity.TransferExample" resultType="java.lang.Integer" >
+    select count(*) from transfer
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update transfer
+    <set >
+      <if test="record.tid != null" >
+        tid = #{record.tid,jdbcType=INTEGER},
+      </if>
+      <if test="record.tprovince != null" >
+        tprovince = #{record.tprovince,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tcity != null" >
+        tcity = #{record.tcity,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update transfer
+    set tid = #{record.tid,jdbcType=INTEGER},
+      tprovince = #{record.tprovince,jdbcType=VARCHAR},
+      tcity = #{record.tcity,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.etc.entity.Transfer" >
+    update transfer
+    <set >
+      <if test="tprovince != null" >
+        tprovince = #{tprovince,jdbcType=VARCHAR},
+      </if>
+      <if test="tcity != null" >
+        tcity = #{tcity,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where tid = #{tid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.etc.entity.Transfer" >
+    update transfer
+    set tprovince = #{tprovince,jdbcType=VARCHAR},
+      tcity = #{tcity,jdbcType=VARCHAR}
+    where tid = #{tid,jdbcType=INTEGER}
+  </update>
+</mapper>
